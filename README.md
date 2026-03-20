@@ -2,7 +2,7 @@
 Student ID: *100098117*
 
 ## Task 1 
-The file for task 1 is **aos_ass1_task1.sh**. This was coded and tested on MacOS.
+The file for task 1 is **task1.sh**. This was coded and tested on MacOS.
 
 ### Running task 1 on Linux
 
