@@ -2,7 +2,7 @@
 Student ID: *100098117*
 
 ## Task 1 
-The file for task 1 is **aos_ass1_task1.sh**. This was coded and tested on MacOS, which is Unix-based and can natively run .sh files. #
+The file for task 1 is **aos_ass1_task1.sh**. This was coded and tested on MacOS.
 
 ### Running task 1 on Linux
 
@@ -26,9 +26,15 @@ The task should run:
 
 ### Running on MacOS
 
-```chmod +x aos_ass1_task1.sh```
+MacOS is Unix-based and can natively run .sh files, unlike Windows, so running the code is the same process as Linux. 
 
-```./aos_ass1_task1.sh```
+First the file must be saved under the name *task1.sh*: this readme assumes this has been done in the folder Desktop. 
+
+Navigate to the folder containing the *task1.sh*: ```cd ~/Desktop```
+
+Make the file executable: ```chmod +x aos_ass1_task1.sh```
+
+Run the file: ```./aos_ass1_task1.sh```
 
 ### Running task 1 on Windows
 
