@@ -32,9 +32,9 @@ First the file must be saved under the name *task1.sh*: this readme assumes this
 
 Navigate to the folder containing the *task1.sh*: ```cd ~/Desktop```
 
-Make the file executable: ```chmod +x aos_ass1_task1.sh```
+Make the file executable: ```chmod +x task1.sh```
 
-Run the file: ```./aos_ass1_task1.sh```
+Run the file: ```./task1.sh```
 
 ### Running task 1 on Windows
 
