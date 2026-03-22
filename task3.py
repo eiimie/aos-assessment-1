@@ -1,35 +1,56 @@
-import os
+import os, time
 
-MAX_SIZE = 5000000  # 5mb
-ALLOWED = [".pdf", ".docx"]
+users = {
+    "admin": "1234",
+    "student": "pass"
+}
+
+fails = {}
+
+def login():
+    u = input("user: ")
+    p = input("pass: ")
+
+    if u not in fails:
+        fails[u] = 0
+
+    if fails[u] > 3:
+        print("locked")
+        return False
+
+    if u in users and users[u] == p:
+        print("ok")
+        fails[u] = 0
+        return True
+    else:
+        print("bad login")
+        fails[u] += 1
+        return False
+
+
+def log(msg):
+    f = open("log.txt", "a")
+    f.write(str(time.time()) + " " + msg + "\n")
+    f.close()
+
 
 def submit():
-    sid = input("id: ")
     path = input("file: ")
 
-    if not os.path.isfile(path):
-        print("not found")
+    if not os.path.exists(path):
+        log("fail missing file")
         return
-
-    size = os.path.getsize(path)
-    if size > MAX_SIZE:
-        print("too big")
 
     name = os.path.basename(path)
-    ext = name.split(".")[-1]
-
-    if ext not in ALLOWED:   # BUG: compares "pdf" vs ".pdf"
-        print("bad type")
-        return
-
-    dest = "submissions/" + sid + "__" + name
 
     with open(path, "rb") as f:
         data = f.read()
 
-    with open(dest, "wb") as f:
+    with open("submissions/" + name, "wb") as f:
         f.write(data)
 
-    print("done")
+    log("submitted " + name)
 
-submit()
+
+if login():
+    submit()
