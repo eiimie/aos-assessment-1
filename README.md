@@ -1,5 +1,5 @@
 # Advanced Operating Systems, Assessment 1  
-Student ID: 100098117  
+**Student ID:** 100098117  
 
 ---
 
@@ -22,6 +22,7 @@ The file for Task 1 is **task1.sh**. This was developed and tested on macOS and 
 ```./task1.sh```
 
 The task should run:
+
 <img width="592" height="511" alt="task1runningonKaliVM" src="https://github.com/user-attachments/assets/7b825204-e500-4bef-9c21-38978fdd90ba" />
 
 MacOS is Unix-based so the same steps apply. 
@@ -49,8 +50,6 @@ This task includes two implementations:
 
 2. Run the script:
 ```python3 task3-python.py```
-
-The code will execute.
 
 ### Running task3-bash (Linux/macOS)
 
