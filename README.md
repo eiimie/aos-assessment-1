@@ -1,45 +1,64 @@
-# Advanced Operating Systems, assessment 1
-Student ID: *100098117*
+# Advanced Operating Systems, Assessment 1  
+Student ID: 100098117  
 
-## Task 1 
-The file for task 1 is **task1.sh**. This was coded and tested on MacOS.
+---
 
-### Running task 1 on Linux
+All scripts should be saved to a known location (e.g. Desktop).  
+If filenames or locations differ, commands should be adjusted accordingly.  
 
-This task has been tested on Oracle VirtualBox running an installation of KALI Linux. 
+---
 
-First of all, save the file to the desktop. This can be done by saving the file to the desktop, or manually by creating a new file titled *task1.sh* on the desktop and copy-pasting the code in. This guide will assume the file is called *task1.sh*; if it is under another name, the commands will have to be adjusted accordingly. 
+## Task 1  
+The file for Task 1 is **task1.sh**. This was developed and tested on macOS and Kali Linux (VirtualBox).
 
-Once the code has been saved as a file, open the terminal and navigate desktop folder with the following command:
+### Running on Linux/macOS
+1. Open terminal and navigate to the script location:
 ```cd ~/Desktop```
 
-Then, make the file executable: 
+2. Make the script executable:
 ```chmod +x task1.sh```
 
-Once this is done, the file can be executed and run with the following command:
+3. Run the script: 
 ```./task1.sh```
 
 The task should run:
-
 <img width="592" height="511" alt="task1runningonKaliVM" src="https://github.com/user-attachments/assets/7b825204-e500-4bef-9c21-38978fdd90ba" />
 
+MacOS is Unix-based so the same steps apply. 
 
-### Running on MacOS
+## Task 2  
+The file for Task 2 is **task2.py**.
 
-MacOS is Unix-based and can natively run .sh files, unlike Windows, so running the code is the same process as Linux. 
+### Running on Windows
+Python 3 must be installed.
 
-First the file must be saved under the name *task1.sh*: this readme assumes this has been done in the folder Desktop. 
+1. Open terminal and navigate to the script location:
+```cd ~/Desktop```. 
 
-Navigate to the folder containing the *task1.sh*: ```cd ~/Desktop```
+2. Execute the code:
+```python3 task2.py```
 
-Make the file executable: ```chmod +x task1.sh```
+## Task 3  
+This task includes two implementations:
+- **task3-python.py** (Python)
+- **task3-bash.sh** (Bash)
 
-Run the file: ```./task1.sh```
+### Running task3-python (Windows)
+1. Navigate to the script location:
+```cd ~/Desktop```. 
 
-### Running task 1 on Windows
+2. Run the script:
+```python3 task3-python.py```
 
-## Task 2 
-The file for task 2 is **task2.py**.
+The code will execute.
 
-## Task 3 
-The files for task 3 are ... 
+### Running task3-bash (Linux/macOS)
+
+1. Navigate to the script location:
+```cd ~/Desktop```
+
+2. Make the script executable:
+```chmod +x task3-bash.sh```
+
+3. Run the script:
+```./task3-bash.sh```
