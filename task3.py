@@ -1,56 +1,50 @@
-import os, time
+import os, hashlib
 
-users = {
-    "admin": "1234",
-    "student": "pass"
-}
+SUB_DIR = "submissions"
+LOG = "log.txt"
 
-fails = {}
-
-def login():
-    u = input("user: ")
-    p = input("pass: ")
-
-    if u not in fails:
-        fails[u] = 0
-
-    if fails[u] > 3:
-        print("locked")
-        return False
-
-    if u in users and users[u] == p:
-        print("ok")
-        fails[u] = 0
-        return True
-    else:
-        print("bad login")
-        fails[u] += 1
-        return False
-
+def hash_file(p):
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        h.update(f.read())
+    return h.hexdigest()
 
 def log(msg):
-    f = open("log.txt", "a")
-    f.write(str(time.time()) + " " + msg + "\n")
-    f.close()
-
+    with open(LOG, "a") as f:
+        f.write(msg + "\n")
 
 def submit():
+    sid = input("id: ")
     path = input("file: ")
 
-    if not os.path.exists(path):
-        log("fail missing file")
+    if not os.path.isfile(path):
+        print("not found")
         return
 
     name = os.path.basename(path)
+    h = hash_file(path)
 
-    with open(path, "rb") as f:
-        data = f.read()
+    for f in os.listdir(SUB_DIR):
+        if f.endswith(name):
+            print("duplicate name")
 
-    with open("submissions/" + name, "wb") as f:
-        f.write(data)
+    dest = f"{sid}__{name}"
 
-    log("submitted " + name)
+    with open(path, "rb") as s, open(os.path.join(SUB_DIR, dest), "wb") as d:
+        d.write(s.read())
 
+    log(f"{sid} {name} {h}")
+    print("ok")
 
-if login():
-    submit()
+def menu():
+    while True:
+        print("1 submit")
+        print("2 exit")
+
+        c = input("> ")
+        if c == "1":
+            submit()
+        else:
+            break
+
+menu()
