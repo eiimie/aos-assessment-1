@@ -1,44 +1,35 @@
 import os
 
-SUBMISSIONS = "submissions"
+MAX_SIZE = 5000000  # 5mb
+ALLOWED = [".pdf", ".docx"]
 
 def submit():
-    student = input("student id: ")
-    path = input("file path: ")
+    sid = input("id: ")
+    path = input("file: ")
 
-    if not os.path.exists(path):
-        print("file not found")
+    if not os.path.isfile(path):
+        print("not found")
         return
 
+    size = os.path.getsize(path)
+    if size > MAX_SIZE:
+        print("too big")
+
     name = os.path.basename(path)
+    ext = name.split(".")[-1]
 
-    dest = SUBMISSIONS + "/" + student + "_" + name
+    if ext not in ALLOWED:   # BUG: compares "pdf" vs ".pdf"
+        print("bad type")
+        return
 
-    f = open(path, "rb")
-    data = f.read()
-    f.close()
+    dest = "submissions/" + sid + "__" + name
 
-    f2 = open(dest, "wb")
-    f2.write(data)
-    f2.close()
+    with open(path, "rb") as f:
+        data = f.read()
 
-    print("submitted")
+    with open(dest, "wb") as f:
+        f.write(data)
 
-def list_files():
-    files = os.listdir(SUBMISSIONS)
-    for f in files:
-        print(f)
+    print("done")
 
-while True:
-    print("1 submit")
-    print("2 list")
-    print("3 exit")
-
-    c = input("> ")
-
-    if c == "1":
-        submit()
-    elif c == "2":
-        list_files()
-    elif c == "3":
-        break
+submit()
