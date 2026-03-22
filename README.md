@@ -39,7 +39,7 @@ Run the file: ```./task1.sh```
 ### Running task 1 on Windows
 
 ## Task 2 
-The file for task 2 is **aos_ass1.task2.py**.
+The file for task 2 is **task2.py**.
 
 ## Task 3 
 The files for task 3 are ... 
