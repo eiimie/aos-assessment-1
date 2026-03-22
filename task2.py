@@ -13,21 +13,15 @@ LOG_FILE = "scheduler_log.txt"
 # round robin time quantum in seconds
 TIME_QUANTUM = 5
 
-
-# -------------------------------------------------------
 # logging helper
-# -------------------------------------------------------
 
 def write_log(message):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open(LOG_FILE, "a") as f:
         f.write(f"[{timestamp}] {message}\n")
 
-
-# -------------------------------------------------------
 # file helpers — storing jobs as pipe-separated lines.
 # format: student_id|job_name|exec_time|priority
-# -------------------------------------------------------
 
 def load_queue():
     jobs = []
@@ -86,9 +80,7 @@ def load_completed():
     return completed
 
 
-# -------------------------------------------------------
 # menu option 1: view pending jobs
-# -------------------------------------------------------
 
 def view_pending_jobs():
     print("\n=== pending job queue ===")
@@ -103,9 +95,7 @@ def view_pending_jobs():
     print()
 
 
-# -------------------------------------------------------
 # menu option 2: submit a job
-# -------------------------------------------------------
 
 def submit_job():
     print("\n=== submit a job request ===")
@@ -154,9 +144,7 @@ def submit_job():
     print()
 
 
-# -------------------------------------------------------
 # menu option 3: process queue with round robin
-# -------------------------------------------------------
 
 def process_round_robin():
     print("\n=== processing job queue — round robin scheduling ===")
@@ -223,9 +211,7 @@ def process_round_robin():
     print()
 
 
-# -------------------------------------------------------
 # menu option 4: view completed jobs
-# -------------------------------------------------------
 
 def view_completed_jobs():
     print("\n=== completed jobs ===")
@@ -240,9 +226,7 @@ def view_completed_jobs():
     print()
 
 
-# -------------------------------------------------------
 # menu option 5: exit with confirmation
-# -------------------------------------------------------
 
 def exit_system():
     print()
@@ -255,10 +239,7 @@ def exit_system():
         print("exit cancelled.")
     print()
 
-
-# -------------------------------------------------------
 # main menu loop
-# -------------------------------------------------------
 
 def main():
     # make sure the log file exists from the start
