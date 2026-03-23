@@ -4,53 +4,44 @@ SUB_DIR="submissions"
 SUB_LOG="submission_log.txt"
 LOGIN_LOG="login_log.txt"
 
-MAX_SIZE=$((5 * 1024 * 1024)) # 5mb
+MAX_SIZE=$((5 * 1024 * 1024))
 
 declare -A FAILED
 declare -A LOCKED
 
-# ensure submissions dir exists
 mkdir -p "$SUB_DIR"
 
 hash_file() {
-    # generate sha256 hash for duplicate detection
-    sha256sum "$1" | awk '{print $1}'
+    # safer hashing wrapper
+    sha256sum "$1" | cut -d ' ' -f1
 }
 
-validate_file() {
-    local file="$1"
-
-    # check extension
-    case "$file" in
-        *.pdf|*.docx) ;;
-        *) echo "invalid file type"; return 1 ;;
-    esac
-
-    # check size
-    size=$(stat -c%s "$file")
-    if [ "$size" -gt "$MAX_SIZE" ]; then
-        echo "file too large"
-        return 1
-    fi
-
-    return 0
+valid_ext() {
+    # check allowed extensions
+    [[ "$1" == *.pdf || "$1" == *.docx ]]
 }
 
-is_duplicate() {
+valid_size() {
+    # check file size limit
+    local size
+    size=$(stat -c%s "$1")
+    [ "$size" -le "$MAX_SIZE" ]
+}
+
+find_duplicate() {
     local name="$1"
     local hash="$2"
 
     for f in "$SUB_DIR"/*; do
-        [ -e "$f" ] || continue
+        [ -f "$f" ] || continue
 
         base=$(basename "$f")
-        existing_name="${base#*__}"
+        existing="${base#*__}"
 
-        if [ "$existing_name" = "$name" ]; then
-            existing_hash=$(hash_file "$f")
-            if [ "$existing_hash" = "$hash" ]; then
-                return 0
-            fi
+        [ "$existing" != "$name" ] && continue
+
+        if [ "$(hash_file "$f")" = "$hash" ]; then
+            return 0
         fi
     done
 
@@ -62,34 +53,66 @@ submit() {
     read -p "file: " path
 
     if [ ! -f "$path" ]; then
-        echo "not found"
+        echo "file not found"
         return
     fi
 
-    validate_file "$path" || return
+    if ! valid_ext "$path"; then
+        echo "invalid type"
+        return
+    fi
+
+    if ! valid_size "$path"; then
+        echo "file too large"
+        return
+    fi
 
     name=$(basename "$path")
     hash=$(hash_file "$path")
 
-    if is_duplicate "$name" "$hash"; then
-        echo "duplicate submission"
+    if find_duplicate "$name" "$hash"; then
+        echo "duplicate rejected"
         return
     fi
 
     dest="$SUB_DIR/${sid}__${name}"
     cp "$path" "$dest"
 
-    echo "$sid $name $hash $(date +%s)" >> "$SUB_LOG"
-    echo "submitted"
+    echo "$sid,$name,$hash,$(date +%s)" >> "$SUB_LOG"
+    echo "stored"
 }
 
 list_submissions() {
-    # list files in submissions dir
-    ls "$SUB_DIR"
+    # cleaner listing
+    if [ -z "$(ls -A "$SUB_DIR")" ]; then
+        echo "no submissions"
+        return
+    fi
+
+    ls "$SUB_DIR" | sort
+}
+
+check_duplicate_manual() {
+    read -p "file path: " path
+
+    if [ ! -f "$path" ]; then
+        echo "not found"
+        return
+    fi
+
+    name=$(basename "$path")
+    hash=$(hash_file "$path")
+
+    if find_duplicate "$name" "$hash"; then
+        echo "duplicate"
+    else
+        echo "not duplicate"
+    fi
 }
 
 login() {
     read -p "user: " user
+    now=$(date +%s)
 
     if [ "${LOCKED[$user]}" = "1" ]; then
         echo "account locked"
@@ -97,26 +120,31 @@ login() {
     fi
 
     read -p "password correct? (y/n): " ok
-    now=$(date +%s)
 
     if [ "$ok" = "y" ]; then
         FAILED[$user]=""
-        echo "$user $now success" >> "$LOGIN_LOG"
-        echo "login ok"
+        echo "$user,$now,ok" >> "$LOGIN_LOG"
+        echo "login successful"
         return
     fi
 
-    echo "$user $now fail" >> "$LOGIN_LOG"
+    echo "$user,$now,fail" >> "$LOGIN_LOG"
 
+    # append timestamp
     FAILED[$user]="${FAILED[$user]} $now"
 
-    # count recent attempts (last 60s)
+    # filter only last 60 seconds
+    recent=""
     count=0
+
     for t in ${FAILED[$user]}; do
         if [ $((now - t)) -le 60 ]; then
+            recent="$recent $t"
             count=$((count + 1))
         fi
     done
+
+    FAILED[$user]="$recent"
 
     if [ "$count" -ge 3 ]; then
         LOCKED[$user]=1
@@ -128,21 +156,29 @@ login() {
     fi
 }
 
+confirm_exit() {
+    read -p "exit? (y/n): " c
+    [[ "$c" == "y" ]]
+}
+
 menu() {
     while true; do
-        echo "1 submit"
-        echo "2 list"
-        echo "3 login"
-        echo "4 exit"
+        echo
+        echo "1 submit assignment"
+        echo "2 check duplicate"
+        echo "3 list submissions"
+        echo "4 login attempt"
+        echo "5 exit"
 
-        read -p "> " c
+        read -p "> " choice
 
-        case "$c" in
+        case "$choice" in
             1) submit ;;
-            2) list_submissions ;;
-            3) login ;;
-            4) break ;;
-            *) echo "invalid" ;;
+            2) check_duplicate_manual ;;
+            3) list_submissions ;;
+            4) login ;;
+            5) confirm_exit && break ;;
+            *) echo "invalid option" ;;
         esac
     done
 }
