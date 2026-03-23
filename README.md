@@ -12,7 +12,7 @@ If filenames or locations differ, commands should be adjusted accordingly.
 The file for Task 1 is **task1.sh**. This was developed and tested on macOS and Kali Linux (VirtualBox).
 
 ### Running on Linux/macOS
-1. Open terminal and navigate to the script location:
+1. Save the file, then open terminal and navigate to the script location:
 ```cd ~/Desktop```
 
 2. Make the script executable:
@@ -33,7 +33,7 @@ The file for Task 2 is **task2.py**.
 ### Running on Windows
 Python 3 must be installed.
 
-1. Open terminal and navigate to the script location:
+1. Save the file, then open terminal and navigate to the script location:
 ```cd ~/Desktop```. 
 
 2. Execute the code:
@@ -45,7 +45,7 @@ This task includes two implementations:
 - **task3-bash.sh** (Bash)
 
 ### Running task3-python (Windows)
-1. Navigate to the script location:
+1. Save the file, then navigate to the script location:
 ```cd ~/Desktop```. 
 
 2. Run the script:
@@ -53,7 +53,7 @@ This task includes two implementations:
 
 ### Running task3-bash (Linux/macOS)
 
-1. Navigate to the script location:
+1. Save the file, then navigate to the script location:
 ```cd ~/Desktop```
 
 2. Make the script executable:
