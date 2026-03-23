@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #cd ~/Desktop/university
 #ls
@@ -137,7 +137,7 @@ while true; do
             }
 
             found=false
-            find "$sdir" -type f -name "*.log" -size +50M 2>/dev/null | while read -r logfile; do
+            while read -r logfile; do
                 found=true
                 base=$(basename "$logfile" .log)
                 timestamp=$(date +%Y%m%d_%H%M%S)
@@ -150,7 +150,7 @@ while true; do
                 else
                     echo "Failed to archive $logfile"
                 fi
-            done
+            done < <(find "$sdir" -type f -name "*.log" -size +50M 2>/dev/null)
 
             [ "$found" = false ] && echo "No .log files larger than 50MB found."
 
